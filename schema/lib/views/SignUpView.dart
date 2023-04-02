@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:schema/views/SignInView.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({super.key});
@@ -28,6 +29,7 @@ class SignUpViewBody extends StatefulWidget{
 
 class _SignUpViewBodyState extends State<SignUpViewBody> {
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
   bool _obscurePasswordText = true;
@@ -73,6 +75,11 @@ class _SignUpViewBodyState extends State<SignUpViewBody> {
                   height:10,
                   width: MediaQuery.of(context).size.width,
                 ),
+                inputNameField(_nameController, 'Enter yor name...', Icons.person, false, TextInputType.name),
+                SizedBox (
+                  height:10,
+                  width: MediaQuery.of(context).size.width,
+                ),
                 inputPasswordField(_passwordController, 'Enter password...', Icons.password, TextInputType.visiblePassword),
                 SizedBox (
                   height:10,
@@ -88,7 +95,7 @@ class _SignUpViewBodyState extends State<SignUpViewBody> {
                     Spacer(),
                     GestureDetector(
                       onTap: () {
-                        print('Already have an account? Sign in');
+                        navigateToSignInView();
                       },
                       child: const Text(
                         'Already have an account? Sign in',
@@ -135,6 +142,36 @@ class _SignUpViewBodyState extends State<SignUpViewBody> {
   }
 
   TextField inputEmailField(TextEditingController _controller, String _labelText, IconData _prefixIcon,bool _obscureText, var _keyboardType) {
+    return TextField (
+      controller: _controller,
+      style:const TextStyle (
+          fontSize:18.0,
+          color: Colors.blue
+      ),
+      obscureText: _obscureText,
+      keyboardType: _keyboardType,
+      decoration: InputDecoration (
+          filled: true,
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide (
+                  width: 1.5,
+                  color: Colors.blue.shade300
+              )
+          ),
+          labelText: _labelText,
+          border: const OutlineInputBorder(),
+          prefixIcon: Icon(_prefixIcon),
+          suffixIcon: IconButton (
+            onPressed: () {
+              _controller.clear();
+            },
+            icon: const Icon(Icons.clear),
+          )
+      ),
+    );
+  }
+
+  TextField inputNameField(TextEditingController _controller, String _labelText, IconData _prefixIcon,bool _obscureText, var _keyboardType) {
     return TextField (
       controller: _controller,
       style:const TextStyle (
@@ -226,5 +263,9 @@ class _SignUpViewBodyState extends State<SignUpViewBody> {
           )
       ),
     );
+  }
+
+  void navigateToSignInView() {
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>SignInView() ,));
   }
 }
