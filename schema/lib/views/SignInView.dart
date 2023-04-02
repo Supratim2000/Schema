@@ -31,7 +31,9 @@ class SignInViewBody extends StatefulWidget {
 
 class _SignInViewBodyState extends State<StatefulWidget> {
   final TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool _obscurePasswordText = true;
+
 
   @override
   Widget build(BuildContext context) {
@@ -70,12 +72,12 @@ class _SignInViewBodyState extends State<StatefulWidget> {
                   width: MediaQuery.of(context).size.width,
                   height: 30,
                 ),
-                inputTextField(_emailController, 'Enter email...', Icons.email, false, TextInputType.emailAddress),
+                inputEmailField(_emailController, 'Enter email...', Icons.email, false, TextInputType.emailAddress),
                 SizedBox (
                   height:10,
                   width: MediaQuery.of(context).size.width,
                 ),
-                inputTextField(_passwordController, 'Enter password...', Icons.password, true, TextInputType.visiblePassword),
+                inputPasswordField(_passwordController, 'Enter password...', Icons.password, TextInputType.visiblePassword),
                 SizedBox (
                   height:10,
                   width: MediaQuery.of(context).size.width,
@@ -127,26 +129,20 @@ class _SignInViewBodyState extends State<StatefulWidget> {
                   height: 10.0,
                   width: MediaQuery.of(context).size.width,
                 ),
-                ConstrainedBox(
-                  constraints: BoxConstraints.tightFor (
-                      height: 50.0,
-                      width: MediaQuery.of(context).size.width
-                  ),
-                  child: ElevatedButton(
-                      onPressed: () {
+                TextButton(
+                    onPressed: () {
 
-                      },
-                      child: const Text(
-                        'Sign Up',
+                    },
+                    child: const Text(
+                        'Don\'t have an account? Sign up',
                         style: TextStyle (
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Merriweather',
-                            color: Colors.white
-                        ),
-                      )
-                  ),
-                ),
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Merriweather',
+                        color: Colors.blue
+                    ),
+                  )
+                )
               ],
             ),
           ),
@@ -155,7 +151,7 @@ class _SignInViewBodyState extends State<StatefulWidget> {
     );
   }
 
-  TextField inputTextField(TextEditingController _controller, String _labelText, IconData _prefixIcon,bool _obscureText, var _keyboardType) {
+  TextField inputEmailField(TextEditingController _controller, String _labelText, IconData _prefixIcon,bool _obscureText, var _keyboardType) {
     return TextField (
       controller: _controller,
       style:const TextStyle (
@@ -180,6 +176,38 @@ class _SignInViewBodyState extends State<StatefulWidget> {
               _controller.clear();
             },
             icon: const Icon(Icons.clear),
+          )
+      ),
+    );
+  }
+
+  TextField inputPasswordField(TextEditingController _controller, String _labelText, IconData _prefixIcon, var _keyboardType) {
+    return TextField (
+      controller: _controller,
+      style:const TextStyle (
+          fontSize:18.0,
+          color: Colors.blue
+      ),
+      obscureText: _obscurePasswordText,
+      keyboardType: _keyboardType,
+      decoration: InputDecoration (
+          filled: true,
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide (
+                  width: 1.5,
+                  color: Colors.blue.shade300
+              )
+          ),
+          labelText: _labelText,
+          border: const OutlineInputBorder(),
+          prefixIcon: Icon(_prefixIcon),
+          suffixIcon: IconButton (
+            onPressed: () {
+              setState(() {
+                _obscurePasswordText = !_obscurePasswordText;
+              });
+            },
+            icon: _obscurePasswordText ? const Icon(Icons.visibility) : const Icon(Icons.visibility_off),
           )
       ),
     );
