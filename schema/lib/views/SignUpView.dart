@@ -1,50 +1,45 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'SignUpView.dart';
+import 'package:flutter/cupertino.dart';
 
-class SignInView extends StatefulWidget {
-  const SignInView({super.key});
+class SignUpView extends StatefulWidget {
+  const SignUpView({super.key});
 
   @override
-  State<StatefulWidget> createState() => _SignInViewState();
-
+  State<SignUpView> createState() => _SignUpViewState();
 }
 
-class _SignInViewState extends State<SignInView> {
+class _SignUpViewState extends State<SignUpView> {
 
   @override
   Widget build(BuildContext context) {
-    
     return MaterialApp (
       debugShowCheckedModeBanner: false,
-      home: SignInViewBody()
+      home: SignUpViewBody()
     );
   }
 }
 
-class SignInViewBody extends StatefulWidget {
-  const SignInViewBody({super.key});
+class SignUpViewBody extends StatefulWidget{
+  const SignUpViewBody({super.key});
 
   @override
-  State<StatefulWidget> createState() => _SignInViewBodyState();
+  State<SignUpViewBody> createState() => _SignUpViewBodyState();
 }
 
-class _SignInViewBodyState extends State<StatefulWidget> {
+class _SignUpViewBodyState extends State<SignUpViewBody> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
   bool _obscurePasswordText = true;
-
+  bool _obscureConfirmPasswordText = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold (
-
       backgroundColor: Colors.white,
-
-        body: SingleChildScrollView(
-          child: Padding(
-          padding: const EdgeInsets.all(20.0),
+      body: SingleChildScrollView (
+        child: Padding (
+          padding: EdgeInsets.all(20.0),
           child: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
@@ -55,18 +50,18 @@ class _SignInViewBodyState extends State<StatefulWidget> {
                   width: MediaQuery.of(context).size.width,
                   height: 10.0,
                 ),
-                Image.asset('images/login.png'),
+                Image.asset('images/register.png'),
                 SizedBox (
                   width: MediaQuery.of(context).size.width,
                   height: 40.0,
                 ),
                 const Text(
-                    'Sign In',
+                  'Sign Up',
                   style: TextStyle (
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Merriweather',
-                    color: Colors.blue
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Merriweather',
+                      color: Colors.blue
                   ),
                 ),
                 SizedBox (
@@ -83,15 +78,20 @@ class _SignInViewBodyState extends State<StatefulWidget> {
                   height:10,
                   width: MediaQuery.of(context).size.width,
                 ),
+                inputConfirmPasswordField(_confirmPasswordController, 'Renter password...', Icons.password, TextInputType.visiblePassword),
+                SizedBox (
+                  height:10,
+                  width: MediaQuery.of(context).size.width,
+                ),
                 Row (
                   children: <Widget> [
                     Spacer(),
                     GestureDetector(
                       onTap: () {
-                        print('forgot password?');
+                        print('Already have an account? Sign in');
                       },
                       child: const Text(
-                        'Forgot password?',
+                        'Already have an account? Sign in',
                         style: TextStyle (
                             fontSize: 14.0,
                             fontWeight: FontWeight.bold,
@@ -116,7 +116,7 @@ class _SignInViewBodyState extends State<StatefulWidget> {
 
                       },
                       child: const Text(
-                          'Sign In',
+                        'Sign Up',
                         style: TextStyle (
                             fontSize: 16.0,
                             fontWeight: FontWeight.bold,
@@ -126,29 +126,11 @@ class _SignInViewBodyState extends State<StatefulWidget> {
                       )
                   ),
                 ),
-                SizedBox (
-                  height: 10.0,
-                  width: MediaQuery.of(context).size.width,
-                ),
-                TextButton(
-                    onPressed: () {
-                      navigateToSignUpPage();
-                    },
-                    child: const Text(
-                        'Don\'t have an account? Sign up',
-                        style: TextStyle (
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Merriweather',
-                        color: Colors.blue
-                    ),
-                  )
-                )
               ],
             ),
           ),
-      ),
         ),
+      ),
     );
   }
 
@@ -157,7 +139,7 @@ class _SignInViewBodyState extends State<StatefulWidget> {
       controller: _controller,
       style:const TextStyle (
           fontSize:18.0,
-        color: Colors.blue
+          color: Colors.blue
       ),
       obscureText: _obscureText,
       keyboardType: _keyboardType,
@@ -214,12 +196,35 @@ class _SignInViewBodyState extends State<StatefulWidget> {
     );
   }
 
-  void navigateToSignUpPage() {
-    Navigator.push (
-        context,
-        MaterialPageRoute(
-            builder: (context) => SignUpView()
-        )
+  TextField inputConfirmPasswordField(TextEditingController _controller, String _labelText, IconData _prefixIcon, var _keyboardType) {
+    return TextField (
+      controller: _controller,
+      style:const TextStyle (
+          fontSize:18.0,
+          color: Colors.blue
+      ),
+      obscureText: _obscureConfirmPasswordText,
+      keyboardType: _keyboardType,
+      decoration: InputDecoration (
+          filled: true,
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide (
+                  width: 1.5,
+                  color: Colors.blue.shade300
+              )
+          ),
+          labelText: _labelText,
+          border: const OutlineInputBorder(),
+          prefixIcon: Icon(_prefixIcon),
+          suffixIcon: IconButton (
+            onPressed: () {
+              setState(() {
+                _obscureConfirmPasswordText = !_obscureConfirmPasswordText;
+              });
+            },
+            icon: _obscureConfirmPasswordText ? const Icon(Icons.visibility) : const Icon(Icons.visibility_off),
+          )
+      ),
     );
   }
 }
